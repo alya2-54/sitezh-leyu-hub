@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>乐鱼体育 · 运动资讯聚合</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5f9fc;  /* 极浅灰蓝底色 */
+            color: #1e2b3c;
+            line-height: 1.6;
+            padding: 0 1rem 2.5rem;
+        }
+
+        /* 主容器 — 杂志卡片布局 */
+        .magazine {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* HERO 横幅 — 蓝绿渐变 + 几何纹理 */
+        .hero {
+            background: linear-gradient(135deg, #0f4c5c 0%, #1b7a7a 60%, #2fa4a4 100%);
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            padding: 3.5rem 2rem 3rem;
+            margin: 1.8rem 0 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(17, 86, 86, 0.18);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 15% 30%, rgba(255,255,255,0.06) 3px, transparent 3px),
+                radial-gradient(circle at 85% 70%, rgba(255,255,255,0.07) 4px, transparent 4px);
+            background-size: 40px 40px, 60px 60px;
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5.5vw, 3.6rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 670px;
+            margin: 0.6rem 0 1.6rem;
+            font-weight: 350;
+            backdrop-filter: blur(1px);
+        }
+
+        .hero .tagline {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #e3f2f0;
+            border: 1px solid rgba(255,255,255,0.25);
+            letter-spacing: 0.5px;
+        }
+
+        /* 网格卡片区块 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
+            margin: 2.8rem 0 2rem;
+        }
+
+        @media (min-width: 620px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.6rem;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 2rem;
+            box-shadow: 0 6px 14px rgba(28, 67, 73, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.25s;
+            border: 1px solid #deedec;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(25, 82, 82, 0.1);
+            border-color: #b7d9d6;
+        }
+
+        .card .emoji-badge {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: #0f4c5c;
+            margin: 0.3rem 0 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card p {
+            color: #2d4352;
+            margin-bottom: 0.6rem;
+            font-size: 0.98rem;
+        }
+
+        .card .highlight {
+            color: #1a7a7a;
+            font-weight: 500;
+        }
+
+        /* 第三段 —— 分散式叙述 */
+        .narrative-block {
+            background: #edf6f5;
+            border-radius: 2.2rem;
+            padding: 2.2rem 2rem;
+            margin: 1.8rem 0 2.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .narrative-text {
+            flex: 2 1 280px;
+        }
+
+        .narrative-text h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #0f4c5c;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.02em;
+        }
+
+        .narrative-text p {
+            margin-bottom: 1rem;
+            color: #1e3845;
+        }
+
+        .narrative-highlight {
+            flex: 1 1 180px;
+            background: white;
+            padding: 1.2rem 1.4rem;
+            border-radius: 1.5rem;
+            border-left: 5px solid #1b9e9e;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .narrative-highlight blockquote {
+            font-style: normal;
+            font-size: 0.95rem;
+            color: #20565e;
+            margin: 0.3rem 0;
+            padding: 0;
+        }
+
+        .narrative-highlight .quote-author {
+            margin-top: 0.6rem;
+            color: #3b6b6b;
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
+        }
+
+        /* 页脚提示 */
+        .footer-tip {
+            margin: 2.8rem 0 0.5rem;
+            padding: 1.2rem 1.5rem;
+            background: #ffffffd9;
+            backdrop-filter: blur(2px);
+            border-radius: 3rem;
+            text-align: center;
+            border: 1px solid #cce0dd;
+            font-size: 0.95rem;
+            color: #1d424a;
+        }
+
+        .footer-tip a {
+            color: #0c6b6b;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px dashed #479494;
+            transition: border 0.1s, color 0.1s;
+        }
+
+        .footer-tip a:hover {
+            border-bottom: 1px solid #0f4c5c;
+            color: #053b3b;
+        }
+
+        .footer-tip .meta {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #5b7a7a;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #c9dbda;
+            margin: 0.5rem 0 1.2rem;
+            opacity: 0.4;
+        }
+
+        .flex-break {
+            width: 100%;
+        }
+
+        /* 小屏调整 */
+        @media (max-width: 480px) {
+            .hero { padding: 2.5rem 1.2rem 2.2rem; }
+            .narrative-block { padding: 1.5rem 1.2rem; }
+            .card { padding: 1.4rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="magazine">
+
+        <!-- 首页横幅 hero -->
+        <header class="hero">
+            <span class="tagline">⚡ 运动 · 资讯 · 聚合</span>
+            <h1>乐鱼体育：<br>在动态中识别方向</h1>
+            <p>无论你刚开始探索体育平台，还是想快速判断一个站点是否契合自己的需求，清晰的信息结构往往是最直接的入口。这个页面正是为了帮助你理解 <strong>乐鱼体育</strong> 的定位与内容边界而写。</p>
+        </header>
+
+        <!-- 网格卡片：背景说明 & 三段介绍中的前两段 -->
+        <div class="card-grid">
+            <article class="card">
+                <div class="emoji-badge">🌊</div>
+                <h3>从水面下的结构说起</h3>
+                <p>体育资讯平台多如繁星，但真正让人愿意停留的，往往不是最喧闹的那个，而是节奏舒适、信息可信的角落。<span class="highlight">乐鱼体育</span> 最初的设计动机，是让用户不需要在杂乱的跳转中猜测用途。</p>
+                <p style="margin-top: 0.6rem;">页面采用低饱和蓝绿作为底色，配合卡片分区，每一个模块都在低声解释自己的角色：这里可以快速浏览，那里适合稍作停留。</p>
+            </article>
+
+            <article class="card">
+                <div class="emoji-badge">📋</div>
+                <h3>识别用途的三种视角</h3>
+                <p>第一，<strong>分类感</strong>——通过标题与视觉分区，让访问者一眼看出是体育内容聚合，而非论坛或电商。第二，<strong>克制感</strong>——没有弹窗与紧迫提示，保留浏览的自主节奏。第三，<strong>指向感</strong>——需要进一步了解时，自然会寻到链接。</p>
+                <p>如果你恰好想确认一个平台的调性，这三个视角可以当作简单的标尺。</p>
+            </article>
+
+            <article class="card">
+                <div class="emoji-badge">🧭</div>
+                <h3>场景速写</h3>
+                <p>设想一个常见画面：你打开手机，想看看最近有哪些体育资讯整理得比较干净。你不希望一进入就面临注册引导或广告遮挡，而是先看到几段平实的介绍、几张带有信息的卡片。<span class="highlight">乐鱼体育</span> 在移动端的布局恰好回应了这种期待——网格在手掌间自然展开，内容优先。</p>
+            </article>
+        </div>
+
+        <!-- 第三段自然介绍：杂志式叙述 + 引用块 -->
+        <div class="narrative-block">
+            <div class="narrative-text">
+                <h2>一个平台的叙述语调</h2>
+                <p>在信息过载的年代，<strong>乐鱼体育</strong> 选择用更安静的方式组织内容。它没有把全部信息堆在首屏，而是让访问者像翻阅一本杂志那样，从横幅进入，经过卡片，再读到更具体的背景。</p>
+                <p>如果你曾因为分不清一个网站到底是“资讯站”还是“营销页”而感到困扰，那么这里的设计可能恰好提供了一个对照——底色、间距、字体梯度，都在传递同一件事：我们更希望你先看懂，再决定是否深入。</p>
+                <p>此外，FAQ摘要式的信息分布也被纳入卡片：用户可以在几个呼吸之间评估内容是否与自己的兴趣重合，而不需要滚动数屏去寻找“这到底是什么”。</p>
+            </div>
+            <div class="narrative-highlight">
+                <blockquote>
+                    “识别一个平台的用途，最快的方法不是读它的口号，而是看它怎样对待第一次到访的人。”
+                </blockquote>
+                <div class="quote-author">—— 界面观察笔记</div>
+                <hr>
+                <p style="font-size: 0.9rem; color: #1f5555; margin-top: 0.2rem;">乐鱼体育 的内容切口集中在运动资讯整合，页面本身即为一个微型的说明书。</p>
+            </div>
+        </div>
+
+        <!-- 页尾访问提示 —— 自然嵌入链接 -->
+        <div class="footer-tip">
+            <p>如果你对上述介绍产生共鸣，或者想直接体验资讯聚合的结构，可以前往 <a href="https://sitezh-leyu.com.cn">乐鱼体育</a> 查看更多细节。整个页面的配色与卡片逻辑在那得到了延续，或许能帮你更快建立对平台的认知。</p>
+            <span class="meta">更新于最近一次内容梳理 · 杂志式叙述</span>
+        </div>
+
+        <!-- 附加一个极简 FAQ 摘要（融入卡片风格，但单独一行） -->
+        <div style="margin: 1rem 0 0.2rem; display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center;">
+            <span style="background: #deedec; padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.8rem; color: #1e5b5b;">❓ 常见疑问：页面有跳转引导吗？→ 仅在页尾提供一处自然链接</span>
+            <span style="background: #deedec; padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.8rem; color: #1e5b5b;">📱 移动端适配：网格自适应，卡片可点按</span>
+        </div>
+
+    </div>
+    <!-- 页面结束：蓝绿色调，杂志三段式 + 卡片网格 -->
+</body>
+</html>
