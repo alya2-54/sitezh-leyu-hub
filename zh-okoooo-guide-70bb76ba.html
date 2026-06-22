@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>okooo · 知识型内容站点介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5faf9;
+            color: #1b2e2c;
+            line-height: 1.6;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page {
+            max-width: 820px;
+            width: 100%;
+        }
+
+        /* 网格卡片背景 (极细网格，用于装饰) */
+        .hero {
+            background: #e2f0ee;
+            background-image: 
+                linear-gradient(rgba(6, 108, 99, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 108, 99, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            border-radius: 28px;
+            padding: 2.8rem 2rem 2.2rem;
+            margin-bottom: 2.2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(19, 93, 84, 0.06);
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 550;
+            letter-spacing: -0.02em;
+            color: #0b4e47;
+        }
+
+        .hero .sub {
+            margin-top: 0.6rem;
+            font-size: 1.1rem;
+            color: #2c5e56;
+            opacity: 0.85;
+            border-bottom: 1px dashed #4e8d83;
+            display: inline-block;
+            padding-bottom: 0.2rem;
+        }
+
+        .hero p {
+            margin-top: 1.2rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #1b403b;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.8rem 0 2.2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.6rem 1.4rem;
+            box-shadow: 0 2px 6px rgba(0, 50, 45, 0.04);
+            border: 1px solid #d6e8e4;
+            transition: box-shadow 0.15s ease, transform 0.1s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 14px rgba(16, 110, 98, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 530;
+            color: #0b5e53;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .card h3::before {
+            content: "▹";
+            color: #3aa396;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #1b423d;
+        }
+
+        .essay-block {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem 1.8rem;
+            margin: 1.2rem 0 1.8rem;
+            border: 1px solid #cfe3de;
+        }
+
+        .essay-block .title-line {
+            font-size: 1.4rem;
+            font-weight: 480;
+            color: #094940;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #3aa396;
+            padding-left: 0.8rem;
+        }
+
+        .essay-block .lede {
+            font-size: 1rem;
+            color: #2c5a52;
+            margin-bottom: 1.2rem;
+            padding: 0.4rem 0.8rem;
+            background: #e5f3ef;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .essay-block p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .essay-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .pull-quote {
+            background: #ecf6f3;
+            border-left: 5px solid #2c8f7e;
+            margin: 1.6rem 0;
+            padding: 0.9rem 1.4rem;
+            border-radius: 0 20px 20px 0;
+            font-style: normal;
+            color: #194b42;
+            font-size: 0.98rem;
+            box-shadow: inset 0 0 0 1px rgba(57, 154, 137, 0.08);
+        }
+
+        .pull-quote::before {
+            content: "💡 提示 ";
+            font-weight: 480;
+            color: #1b735f;
+            margin-right: 0.3rem;
+        }
+
+        .faq-mini {
+            background: #e7f2ef;
+            border-radius: 24px;
+            padding: 1.6rem 1.6rem 1.2rem;
+            margin: 1.8rem 0;
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.6rem;
+            border-bottom: 1px solid #c1d9d2;
+            padding-bottom: 0.4rem;
+        }
+
+        .faq-mini summary {
+            font-weight: 480;
+            color: #09433b;
+            cursor: pointer;
+            padding: 0.3rem 0;
+            font-size: 0.98rem;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-mini summary::before {
+            content: "Q";
+            background: #3aa396;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .faq-mini details[open] summary {
+            color: #053d35;
+        }
+
+        .faq-mini .answer {
+            padding: 0.4rem 0 0.8rem 1.9rem;
+            color: #1b4f46;
+            font-size: 0.93rem;
+        }
+
+        .visit-line {
+            margin: 2rem 0 1.2rem;
+            background: #dff0eb;
+            border-radius: 60px;
+            padding: 1rem 1.6rem;
+            text-align: center;
+            font-size: 1.05rem;
+            border: 1px solid #b1cec5;
+            color: #094d42;
+        }
+
+        .visit-line a {
+            color: #066659;
+            font-weight: 530;
+            text-decoration: none;
+            border-bottom: 1.5px dotted #2b8f7b;
+            transition: border-bottom 0.1s;
+            padding: 0 0.2rem;
+        }
+
+        .visit-line a:hover {
+            border-bottom: 1.5px solid #043d33;
+            color: #043f35;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #5a7b73;
+            border-top: 1px solid #d0e2db;
+            padding-top: 1.8rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body {
+                padding: 0.9rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem 1.6rem;
+                border-radius: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+
+            .essay-block {
+                padding: 1.4rem 1rem;
+                border-radius: 18px;
+            }
+
+            .essay-block .title-line {
+                font-size: 1.2rem;
+            }
+
+            .pull-quote {
+                margin: 1rem 0;
+                padding: 0.7rem 1rem;
+            }
+
+            .faq-mini {
+                padding: 1.2rem 1rem;
+            }
+
+            .visit-line {
+                border-radius: 30px;
+                padding: 0.8rem 1rem;
+                font-size: 0.98rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .hero .sub {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- hero 网格装饰 -->
+    <div class="hero">
+        <h1>okooo · 内容标识</h1>
+        <div class="sub">一个中文知识型站点</div>
+        <p>如果你曾想过「这个网站到底是做什么的」，那么这篇简明的介绍正是为你而写。我们从用途出发，把信息拆解成可快速理解的片段。</p>
+    </div>
+
+    <!-- 网格卡片：关键特征 -->
+    <div class="card-grid">
+        <div class="card">
+            <h3>偏知识型内容</h3>
+            <p>文章围绕概念、方法、工具与观察展开，不追逐热点，更侧重信息密度与结构清晰。</p>
+        </div>
+        <div class="card">
+            <h3>中文语境</h3>
+            <p>面向中文读者，用词平实，不依赖翻译腔。表达上兼顾准确性与可读性。</p>
+        </div>
+        <div class="card">
+            <h3>无干扰阅读</h3>
+            <p>页面排版以文本为中心，减少弹窗、横幅和无关模块。专注内容本身。</p>
+        </div>
+        <div class="card">
+            <h3>持续积累</h3>
+            <p>站点并非一次性发布，而是逐步添加新的文章与条目，形成可回溯的笔记式档案。</p>
+        </div>
+    </div>
+
+    <!-- 正文 / 博客式段落 -->
+    <div class="essay-block">
+        <div class="title-line">当你打开这个站点</div>
+        <div class="lede">先判断它的类型，再决定是否值得停留。</div>
+
+        <p>互联网上充斥着各种首页——有的直接展示产品价格，有的抛出大幅 banner 引导注册，也有的只有一段模糊的「正在建设中」。<a href="https://zh-okoooo.com">okooo</a> 希望成为另一种存在：你进入后，首先看到的是有内容的句子，而不是营销话术。</p>
+
+        <p>站内文章通常以概念为核心，例如对某个术语的拆解、某种工作流的记录，或是对一类信息源的梳理。它们不承诺「五分钟精通」，但试图在几百或一两千字内把一件事说清楚。如果你厌倦了碎片化推送，这里的节奏可能更合口味。</p>
+
+        <div class="pull-quote">
+            大多数页面不需要注册即可阅读。没有隐藏收费区，也没有强制登录弹窗。
+        </div>
+
+        <p>结构上，okooo 倾向于使用小标题、列表或简短段落来分割信息，而不是长篇不分段的瀑布流。目录或锚点链接也常被使用，以便你快速跳到感兴趣的部分。这种处理方式对手机阅读同样友好——在窄屏上，文字会自动重排，卡片与区块保持清晰间距。</p>
+    </div>
+
+    <!-- FAQ 摘要 (简洁) -->
+    <div class="faq-mini">
+        <details>
+            <summary>okooo 适合哪些人？</summary>
+            <div class="answer">适合希望快速了解某个概念、寻找不同表述角度的读者，也适合对工具与方法论感兴趣的人。不刻意限定领域，但整体偏信息组织与认知类话题。</div>
+        </details>
+        <details>
+            <summary>文章是原创还是整理？</summary>
+            <div class="answer">多数为独立撰写的原创内容，部分基于公开资料做二次梳理，会注明参考来源或延伸阅读链接。不抄袭，不洗稿。</div>
+        </details>
+        <details>
+            <summary>有更新频率吗？</summary>
+            <div class="answer">没有固定日更或周更，但会持续补充。质量优先于数量，有时一篇短文会经过多轮调整才发布。</div>
+        </details>
+    </div>
+
+    <!-- 访问句 (自然嵌入 a 标签) -->
+    <div class="visit-line">
+        如果你觉得这种内容风格值得一试，可以前往 <a href="https://zh-okoooo.com">okooo</a> 浏览当前文章。无需注册，直接阅读。
+    </div>
+
+    <!-- 底部说明 -->
+    <div class="footer-note">
+        介绍页 · 内容方向与站点特征简述
+    </div>
+</div>
+</body>
+</html>
